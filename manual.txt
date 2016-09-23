@@ -1,0 +1,5 @@
+[slickitbhead class="wrp-slider"]
+[slickitb id="3664" title="Слайд 1" text="Текст для слайда 1" link="/o-nas/"]
+[slickitb id="3664" title="Слайд 2" text="Текст для слайда 2" link="/contacts/"]
+[slickitb id="3664" title="Слайд 3" text="Текст для слайда 3" link="/contacts/"]
+[slickitbfooter]
