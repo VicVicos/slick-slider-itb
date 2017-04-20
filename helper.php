@@ -91,6 +91,12 @@ class ItbSlick
      */
     static function get_img ($id)
     {
+        /*$pictures = get_posts( array(
+            'posts_per_page' => -1,
+            'post__in'       => $ids_arr,
+            'post_type'      => 'attachment',
+            'orderby'        => 'post__in',
+        ) );*/
     	global $wpdb;
 		$strSelect = "SELECT t1.guid, t1.post_excerpt, t1.post_content, t1.post_title, t2.meta_value
 			FROM $wpdb->posts AS t1
@@ -99,7 +105,7 @@ class ItbSlick
 			AND t1.ID = t2.post_id
 			AND t2.meta_key = '_wp_attached_file';";
 		$path = $wpdb->get_results($strSelect, OBJECT);
-		$path = $path['0'];
+		$path = $path[0];
     	return $path;
     }
 }
