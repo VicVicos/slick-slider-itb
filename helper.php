@@ -4,15 +4,24 @@
  */
 class ItbSlick
 {
-	//static $dir = '/wp-content/plugins/ndl-booking/';
 	/**
 	 * Отображение слайдера
 	 * @return html
 	 */
-	public static function slickitb ($atts)
+	public static function slickitb ($atts, $content)
 	{
-		$atts = shortcode_atts(array('id' => 0, 'title' => '', 'text' => '', 'link' => '#', 'count' => '1') , $atts, 'slickitb');
-		return self::getHtml($atts);
+		$atts = shortcode_atts(
+		    array(
+		        'id' => 0,
+                'title' => '',
+                'text' => '',
+                'link' => '#',
+                'count' => '1'
+            ),
+                $atts,
+                'slickitb'
+        );
+		return self::getHtml($atts, $content);
 	}
     /**
 	 * Обёркти head
@@ -37,25 +46,41 @@ class ItbSlick
 	 * Выводим форму
 	 * @return str html формы отправки
 	 */
-	static function getHtml ($atts)
+	static function getHtml ($atts, $content)
 	{
+	    $title = '';
+	    $link = '';
+	    $id = 0;
         extract($atts);
-		$path = $_SERVER['HTTP_HOST'];
-		$html = "";
         $img = self::get_img($id);
-        // var_dump($img);
+
         if ($img == '') {
             return false;
         }
-		// Началдо формы
-		$html .= '<div class="slide-' . $count .'">
-                        <div class="content">
-                            <p>' . $title . '</p>
-                            <p>' . $text . '</p>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal">Заказать</a>
+
+        $patternValue = [
+            0 => '%guid%',
+            1 => '%meta_value%',
+            2 => '%title%',
+            3 => '%content%',
+            4 => '%link%'
+        ];
+        $values = [
+            0 => $img->guid,
+            1 => $img->meta_value,
+            2 => $title,
+            3 => $content,
+            4 => $link
+        ];
+		$preHtml = '<div>
+                        <img src="%guid%" alt="%meta_value%" />
+                        <div class="slide-content">
+                            <p class="title">%title%</p>
+                            <div>%content%</div>
+                            <a href="%link%" class="btn btn-b-orange">Подробнее</a>
                         </div>
-                        <img src="' . $img->guid . '" alt="' . $img->meta_value . '" />
                     </div>';
+        $html = str_replace($patternValue , $values, $preHtml);
 		return $html;
 	}
     /**
